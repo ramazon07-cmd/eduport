@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main>
+<!-- =======================
+Page banner video START -->
+
+<br>
+<br>
+<br>
+<br>
+<section class="py-0 pb-lg-5">
+	<div class="container">
+		<div class="row g-3">
+			<!-- Course video START -->
+			<div class="col-12">
+				<div class="video-player rounded-3">
+					<video controls crossorigin="anonymous" playsinline>
+						<source src="{{ lesson.video.url }}" type="video/mp4" size="720">
+					</video>
+				</div>
+			</div>
+			<!-- Course video END -->
+
+			<!-- Playlist responsive toggler START -->
+			<div class="col-12 d-lg-none">
+				<button class="btn btn-primary mb-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+					<i class="bi bi-camera-video me-1"></i> Playlist
+				</button>
+			</div>
+			<!-- Playlist responsive toggler END -->
+		</div>
+	</div>
+</section>
+<!-- =======================
+Page banner video END -->
+
+
+<!-- =======================
+Page content START -->
+<section class="pt-0">
+	<div class="container">
+		<div class="row g-lg-5">
+
+			<!-- Main content START -->
+			<div class="col-lg-8">
+				<div class="row g-4">
+
+					<!-- Course title START -->
+					<div class="col-12">
+						<!-- Title -->
+						<h1>{{ course.name }}</h1>
+					</div>
+					<!-- Course title END -->
+
+					<!-- Instructor detail START -->
+					<div class="col-12">
+						<div class="d-sm-flex justify-content-sm-between align-items-center">
+							<!-- Avatar detail -->
+							<div class="d-flex align-items-center">
+								<!-- Avatar image -->
+								<div class="avatar avatar-lg">
+									<img class="avatar-img rounded-circle" src="{{ course.author.avatar.url }}" alt="avatar">
+								</div>
+								<div class="ms-3">
+									<h6 class="mb-0">By {{ course.author.first_name }} {{ course.author.last_name }}</h6>
+									<p class="mb-0 small">A School Student</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Instructor detail END -->
+
+					<!-- Course detail START -->
+					<div class="col-12">
+						<!-- Tabs START -->
+						<ul class="nav nav-pills nav-pills-bg-soft px-3" id="course-pills-tab" role="tablist">
+							<!-- Tab item -->
+							<li class="nav-item me-2 me-sm-4" role="presentation">
+								<button class="nav-link mb-0 active" id="course-pills-tab-1" data-bs-toggle="pill" data-bs-target="#course-pills-1" type="button" role="tab" aria-controls="course-pills-1" aria-selected="true">Overview</button>
+							</li>
+							<!-- Tab item -->
+							<li class="nav-item me-2 me-sm-4" role="presentation">
+								<button class="nav-link mb-0" id="course-pills-tab-4" data-bs-toggle="pill" data-bs-target="#course-pills-4" type="button" role="tab" aria-controls="course-pills-4" aria-selected="false">Comment</button>
+							</li>
+						</ul>
+						<!-- Tabs END -->
+
+						<!-- Tab contents START -->
+						<div class="tab-content pt-4 px-3" id="course-pills-tabContent">
+							<!-- Content START -->
+							<div class="tab-pane fade show active" id="course-pills-1" role="tabpanel" aria-labelledby="course-pills-tab-1">
+								<!-- Course detail START -->
+								<h5 class="mb-3">Course Description</h5>
+								<p class="mb-0">{{ course.paragraph1 }}</p>
+								<br>
+								<p class="mb-0">{{ course.paragraph2 }}</p>
+								<br>
+								<p class="mb-0">{{ course.paragraph3 }}</p>
+								<br>
+								<p class="mb-0">{{ course.paragraph4 }}</p>
+
+
+
+							</div>
+							<!-- Content END -->
+
+							<!-- Content START -->
+							<div class="tab-pane fade" id="course-pills-4" role="tabpanel" aria-labelledby="course-pills-tab-4">
+								<!-- Review START -->
+								<div class="row mb-4">
+									<div class="col-12">
+										<h5 class="mb-4">Ask Your Question</h5>
+
+										<!-- Comment box -->
+										<div class="d-flex mb-4">
+											<!-- Avatar -->
+											<div class="avatar avatar-sm flex-shrink-0 me-2">
+												<img class="avatar-img rounded-circle" src="{{ request.user.avatar.url }}" alt="{{ request.user.first_name }}">
+											</div>
+
+											<form class="w-100 d-flex" method="POST">
+												{% csrf_token %}
+    										{{ form.body }}
+												<button class="btn btn-primary ms-2 mb-0" type="submit">Post</button>
+											</form>
+										</div>
+
+										<!-- Comment item START -->
+
+										<!-- Comment item END -->
+
+										<!-- Comment item START -->
+										{% for comment in comments %}
+										<div class="border p-2 p-sm-4 rounded-3">
+											<ul class="list-unstyled mb-0">
+												<li class="comment-item">
+													<div class="d-flex">
+														<!-- Avatar -->
+														<div class="avatar avatar-sm flex-shrink-0">
+															<a href="#"><img class="avatar-img rounded-circle" src="{{ comment.author.avatar.url }}" alt=""></a>
+														</div>
+														<div class="ms-2">
+															<!-- Comment by -->
+															<div class="bg-light p-3 rounded">
+																<div class="d-flex justify-content-center">
+																	<div class="me-2">
+																		<h6 class="mb-1 lead fw-bold"> <a href="#!"> {{ comment.author.first_name }} {{ comment.author.last_name }} </a></h6>
+																		<p class="h6 mb-0">{{ comment.body }}</p>
+																	</div>
+																	<small>{{ comment.created_at|timesince }}</small>
+																</div>
+															</div>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</div>
+										{% endfor %}
+										<!-- Comment item END -->
+
+									</div>
+
+								</div>
+							</div>
+							<!-- Content END -->
+						</div>
+						<!-- Tab contents END -->
+					</div>
+					<!-- Course detail END -->
+				</div>
+			</div>
+			<!-- Main content END -->
+
+			<!-- Right sidebar START -->
+			<div class="col-lg-4">
+				<!-- Responsive offcanvas body START -->
+				<div class="offcanvas-lg offcanvas-end" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+					<div class="offcanvas-header bg-dark">
+						<h5 class="offcanvas-title text-white" id="offcanvasSidebarLabel">Course playlist</h5>
+						<button type="button" class="btn btn-sm btn-light mb-0" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasSidebar" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+					</div>
+					<div class="offcanvas-body p-3 p-lg-0">
+						<div class="col-12">
+							<!-- Accordion START -->
+							<div class="accordion accordion-icon accordion-bg-light" id="accordionExample2">
+								<!-- Item -->
+								{% for lecture in course.lectures.all %}
+								<div class="accordion-item mb-3">
+									<h6 class="accordion-header font-base" id="heading-1">
+										<a class="accordion-button fw-bold rounded collapsed d-block" href="#collapse-1" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+											<span class="mb-0">{{ lecture.name }}</span>
+											<span class="small d-block mt-1">({{ lecture.lessons.count }} Lectures)</span>
+										</a>
+									</h6>
+									<div id="collapse-1" class="accordion-collapse collapse show" aria-labelledby="heading-1" data-bs-parent="#accordionExample2">
+										<div class="accordion-body mt-3">
+											<div class="vstack gap-3">
+
+												{% for lesson in lecture.lessons.all %}
+												<div class="d-flex justify-content-between align-items-center">
+													<div class="position-relative d-flex align-items-center">
+														<a href="#" class="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
+															<i class="fas fa-play me-0"></i>
+														</a>
+														<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px">{{ lesson.name }}</span>
+													</div>
+													<p class="mb-0 text-truncate">{{ lesson.video_duration }} seconds</p>
+												</div>
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+							<!-- Accordion END -->
+						</div>
+					</div>
+				</div>
+				<!-- Responsive offcanvas body END -->
+
+				<!-- Tags START -->
+				<div class="mt-4">
+					<h4 class="mb-3">Tags</h4>
+					<ul class="list-inline mb-0">
+						{% for tag in tags %}
+						<li class="list-inline-item"> <a class="btn btn-outline-light btn-sm" href="{% url 'tag_courses' tag.name %}">{{ tag.name }}</a> </li>
+						{% endfor %}
+					</ul>
+				</div>
+				<!-- Tags END -->
+			</div>
+			<!-- Right sidebar END -->
+
+		</div><!-- Row END -->
+	</div>
+</section>
+<!-- =======================
+Page content END -->
+
+</main>
+
+{% endblock %}
