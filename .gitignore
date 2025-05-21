@@ -10,10 +10,9 @@ env/
 
 db.sqlite3
 /media/
-/static/
 
 .vscode/
 .idea/
 
-.DS_Store 
+.DS_Store
 .vercel
